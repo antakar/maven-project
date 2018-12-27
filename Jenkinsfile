@@ -1,53 +1,55 @@
 pipeline {
     agent any
  
+    parameters {
+         string(name: 'tomcat_dev', defaultValue: '3.8.170.252', description: 'Staging Server')
+         string(name: 'tomcat_prod', defaultValue: '18.130.239.214', description: 'Production Server')
+    }
+
+    triggers {
+        pollSCM('* * * * *')
+    }
+
     tools {
         maven 'localMaven'
     }
  
  
-    stages{
-        stage('Build'){
-            steps {
-                sh 'mvn clean package'
+stages{
+    stage ('Builkd and Checkstyle'){
+        parallel{
+            stage('Build'){
+                steps {
+                    sh 'mvn clean package'
+                }
+                post {
+                    success {
+                        echo 'Now Archiving...'
+                        archiveArtifacts artifacts: '**/target/*.war'
+                    }
+                }
             }
-            post {
-                success {
-                    echo 'Now Archiving...'
-                    archiveArtifacts artifacts: '**/target/*.war'
+            stage('Run Static Analysis'){
+                steps {
+                    build job: 'static-analysis'
                 }
             }
         }
-        stage('Run Static Analysis'){
-            steps {
-                build job: 'static-analysis'
-            }
-        }
-        stage ('Deploy to Staging'){
-            steps {
-                build job: 'deploy-to-staging'
-            }
-        }
-
-        stage ('Deploy to production'){
-            steps{
-                //timeout(time:5, unit:'DAYS'){
-                //    input message:'Approve PRODUCTION Deployment?'
-                //}
-
-                build job: 'deploy-to-prod'
-            }
-            post {
-                success {
-                    echo 'Code deployed to Production.'
-                }
-
-                failure {
-                    echo ' Deployment failed.'
-                }
-            }
-        }
-
-
     }
+}
+        stage ('Deployments'){
+            parallel{
+                stage ('Deploy to Staging'){
+                    steps {
+                        sh "scp -i /home/jacek/.ssh/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat8/webapps"
+                    }
+                }
+
+                stage ("Deploy to Production"){
+                    steps {
+                        sh "scp -i /home/jacek/.ssh/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat8/webapps"
+                    }
+                }
+            }
+        }
 }
