@@ -1,1 +1,17 @@
 target
+server/.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.m2e.core.prefs
+server/.classpath
+server/.project
+server/.settings/org.eclipse.core.resources.prefs
+server/.settings/org.eclipse.jdt.apt.core.prefs
+server/.settings/org.eclipse.m2e.core.prefs
+webapp/.classpath
+webapp/.project
+webapp/.settings/org.eclipse.core.resources.prefs
+webapp/.settings/org.eclipse.jdt.apt.core.prefs
+webapp/.settings/org.eclipse.jdt.core.prefs
+webapp/.settings/org.eclipse.m2e.core.prefs
+webapp/src/main/webapp/index.jsp
+.project
