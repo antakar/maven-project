@@ -36,7 +36,7 @@ stages{
             }
         }
     }
-}
+    
     stage ('Deployments'){
         parallel{
             stage ('Deploy to Staging'){
