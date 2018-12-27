@@ -13,5 +13,4 @@ webapp/.settings/org.eclipse.core.resources.prefs
 webapp/.settings/org.eclipse.jdt.apt.core.prefs
 webapp/.settings/org.eclipse.jdt.core.prefs
 webapp/.settings/org.eclipse.m2e.core.prefs
-webapp/src/main/webapp/index.jsp
 .project
