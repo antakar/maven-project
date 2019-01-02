@@ -29,21 +29,10 @@ pipeline {
                         }
                     }
                 }
-                //stage('Run Static Analysis'){
-                    //steps {
-                        //build job: 'static-analysis'
-                    //}
-                stage ('Analysis') {
-                    steps{
-                        [$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: '**/target/checkstyle-result.xml', unstableTotalAll:'0']
-                        }
-                    steps{
-                        [$class: 'PmdPublisher', pattern: '**/target/pmd.xml', unstableTotalAll:'0']
-                        }
-                    steps{
-                        [$class: 'FindBugsPublisher', pattern: '**/findbugsXml.xml', unstableTotalAll:'0']
-                        }
-                }
+                stage('Run Static Analysis'){
+                    steps {
+                        build job: 'static-analysis'
+                    }
                 }
             }
         }
@@ -64,3 +53,4 @@ pipeline {
             }
         }
     }
+}
