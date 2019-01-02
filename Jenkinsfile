@@ -34,9 +34,15 @@ pipeline {
                         //build job: 'static-analysis'
                     //}
                 stage ('Analysis') {
-                    step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: '**/target/checkstyle-result.xml', unstableTotalAll:'0'])
-                    step([$class: 'PmdPublisher', pattern: '**/target/pmd.xml', unstableTotalAll:'0'])
-                    step([$class: 'FindBugsPublisher', pattern: '**/findbugsXml.xml', unstableTotalAll:'0'])
+                    steps{
+                        [$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: '**/target/checkstyle-result.xml', unstableTotalAll:'0']
+                        }
+                    steps{
+                        ([$class: 'PmdPublisher', pattern: '**/target/pmd.xml', unstableTotalAll:'0']
+                        }
+                    steps{
+                        [$class: 'FindBugsPublisher', pattern: '**/findbugsXml.xml', unstableTotalAll:'0']
+                        }
                 }
                 }
             }
